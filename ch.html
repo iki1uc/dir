@@ -1,1 +1,17 @@
+<script type="module">
+  import { Instanz } from "./instanz-core.js";
+  import { respo } from "./respo-core.js";
+  import { dir } from "./dir-core.js";
+
+  const core = Instanz("DIR-01", "GATE-A", "SAT-OK", "ANKER-ROOT");
+  const r = respo(core);
+  const d = dir(r);
+
+  document.getElementById("id").textContent    = core.ID;
+  document.getElementById("gate").textContent  = core.GATE;
+  document.getElementById("sat").textContent   = core.SAT;
+  document.getElementById("anker").textContent = core.ANKER;
+  document.getElementById("respo").textContent = r;
+  document.getElementById("dir").textContent   = d;
+</script>
 

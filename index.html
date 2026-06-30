@@ -1,1 +1,14 @@
+<script type="module">
+  import { mir } from "./mir-core.js";
+  import { respo } from "./respo-core.js";
+  import { dir } from "./dir-core.js";
+
+  const impulse = mir("Frage");
+  const checked = respo(impulse);
+  const answer = dir(checked);
+
+  document.getElementById("mir").textContent = impulse;
+  document.getElementById("respo").textContent = checked;
+  document.getElementById("dir").textContent = answer;
+</script>
 

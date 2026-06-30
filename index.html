@@ -1,14 +1,27 @@
 <script type="module">
   import { mir } from "./mir-core.js";
+  import { Instanz } from "./instanz-core.js";
   import { respo } from "./respo-core.js";
   import { dir } from "./dir-core.js";
 
+  // 1) MIR erzeugt den Impuls
   const impulse = mir("Frage");
-  const checked = respo(impulse);
+
+  // 2) Instanz erzeugen (ID, GATE, SAT, ANKER)
+  const core = Instanz("DIR-01", "GATE-A", "SAT-OK", "ANKER-ROOT");
+
+  // 3) RESPO prüft die Instanz (nicht den Impuls!)
+  const checked = respo(core);
+
+  // 4) DIR entsteht aus RESPO
   const answer = dir(checked);
 
+  // 5) Ausgabe
   document.getElementById("mir").textContent = impulse;
+  document.getElementById("id").textContent = core.ID;
+  document.getElementById("gate").textContent = core.GATE;
+  document.getElementById("sat").textContent = core.SAT;
+  document.getElementById("anker").textContent = core.ANKER;
   document.getElementById("respo").textContent = checked;
   document.getElementById("dir").textContent = answer;
 </script>
-

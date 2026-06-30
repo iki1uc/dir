@@ -1,4 +1,3 @@
-export function dir(fromRespo) {
-  return `DIR antwortet: ${fromRespo}`;
+export function dir(respoOutput) {
+  return `DIR: ${respoOutput}`;
 }
-

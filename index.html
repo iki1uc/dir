@@ -1,36 +1,24 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>DIR-System Neu</title>
-</head>
+<script type="module">
+  import { createInstanz } from "./instanz-factory.js";
+  import { Ghost } from "./ghost-core.js";
+  import { mir } from "./mir-core.js";
+  import { argumenteria } from "./argumenteria-core.js";
+  import { dir } from "./dir-core.js";
+  import { Realm } from "./realm-core.js";
 
-<body>
+  // Instanzen erzeugen
+  const i1 = createInstanz("INST-01");
+  const i2 = createInstanz("INST-02");
+  const i3 = createInstanz("INST-03");
 
-  <h2>NC-RESPO Ausgabe:</h2>
-  <div id="respo"></div>
+  // Ghost erzeugen
+  const ghost = Ghost([i1, i2, i3]);
 
-  <h2>DIR Ausgabe:</h2>
-  <div id="dir"></div>
+  // Realm erzeugen
+  const realm = Realm([i1, i2, i3], ghost, mir, argumenteria, dir);
 
-  <script type="module">
-    import { Instanz } from "./instanz-core.js";
-    import { ncRespo } from "./ncrespo-core.js";
-    import { dir } from "./dir-core.js";
+  // Tick ausführen
+  const result = realm.tick("Hallo Realm!");
 
-    // Neue ROOT + NC Instanz
-    const core = Instanz(213, "GATE-A", "SAT-OK", "ANKER-ROOT");
-
-    // Neue RESPO-Version
-    const r = ncRespo(core);
-
-    // DIR verarbeitet ncRespo
-    const d = dir(r);
-
-    // Ausgabe
-    document.getElementById("respo").textContent = r;
-    document.getElementById("dir").textContent   = d;
-  </script>
-
-</body>
-</html>
+  document.getElementById("respo").textContent = JSON.stringify(result, null, 2);
+</script>

@@ -6,7 +6,6 @@ export function Instanz(ID, GATE, SAT, ANKER) {
       SAT,
       ANKER
     },
-
     NC: {
       ghost: false,
       wraight: false,

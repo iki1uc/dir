@@ -1,27 +1,36 @@
-<script type="module">
-  import { mir } from "./mir-core.js";
-  import { Instanz } from "./instanz-core.js";
-  import { respo } from "./respo-core.js";
-  import { dir } from "./dir-core.js";
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>DIR-System Neu</title>
+</head>
 
-  // 1) MIR erzeugt den Impuls
-  const impulse = mir("Frage");
+<body>
 
-  // 2) Instanz erzeugen (ID, GATE, SAT, ANKER)
-  const core = Instanz("DIR-01", "GATE-A", "SAT-OK", "ANKER-ROOT");
+  <h2>NC-RESPO Ausgabe:</h2>
+  <div id="respo"></div>
 
-  // 3) RESPO prüft die Instanz (nicht den Impuls!)
-  const checked = respo(core);
+  <h2>DIR Ausgabe:</h2>
+  <div id="dir"></div>
 
-  // 4) DIR entsteht aus RESPO
-  const answer = dir(checked);
+  <script type="module">
+    import { Instanz } from "./instanz-core.js";
+    import { ncRespo } from "./ncrespo-core.js";
+    import { dir } from "./dir-core.js";
 
-  // 5) Ausgabe
-  document.getElementById("mir").textContent = impulse;
-  document.getElementById("id").textContent = core.ID;
-  document.getElementById("gate").textContent = core.GATE;
-  document.getElementById("sat").textContent = core.SAT;
-  document.getElementById("anker").textContent = core.ANKER;
-  document.getElementById("respo").textContent = checked;
-  document.getElementById("dir").textContent = answer;
-</script>
+    // Neue ROOT + NC Instanz
+    const core = Instanz(213, "GATE-A", "SAT-OK", "ANKER-ROOT");
+
+    // Neue RESPO-Version
+    const r = ncRespo(core);
+
+    // DIR verarbeitet ncRespo
+    const d = dir(r);
+
+    // Ausgabe
+    document.getElementById("respo").textContent = r;
+    document.getElementById("dir").textContent   = d;
+  </script>
+
+</body>
+</html>

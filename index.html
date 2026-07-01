@@ -1,10 +1,8 @@
-<div id="vis">
-  <div class="step" id="vis-mir">MIR</div>
-  <div class="step" id="vis-respo">RESPO</div>
-  <div class="step" id="vis-arg">ARGUMENTERIA</div>
-  <div class="step" id="vis-dir">DIR</div>
-  <div class="step" id="vis-real">REAL</div>
-</div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>VISIO – Pipeline</title>
 
 <style>
 #vis {
@@ -30,4 +28,92 @@
   color:#000;
   border-color:#f00;
 }
+#pipeline, #real {
+  margin-top:20px;
+  white-space:pre-wrap;
+  background:#111;
+  padding:10px;
+  border:1px solid #333;
+  color:#0f0;
+  font-family:monospace;
+}
+button {
+  margin-top:20px;
+  padding:10px 20px;
+  font-size:16px;
+}
 </style>
+</head>
+
+<body>
+
+<h1>VISIO – MIR → RESPO → ARG → DIR → REAL</h1>
+
+<button id="trigger">Pipeline starten</button>
+
+<div id="vis">
+  <div class="step" id="vis-mir">MIR</div>
+  <div class="step" id="vis-respo">RESPO</div>
+  <div class="step" id="vis-arg">ARGUMENTERIA</div>
+  <div class="step" id="vis-dir">DIR</div>
+  <div class="step" id="vis-real">REAL</div>
+</div>
+
+<div id="pipeline"></div>
+<div id="real"></div>
+
+<script type="module">
+import { visClear, visOn, visFail } from "./visio-engine.js";
+
+// Dummy-Funktionen (du kannst deine echten einsetzen)
+function mir(x){ return "Impulse: " + x; }
+function respo(core, imp){ return "RESPO verarbeitet: " + imp; }
+function argumenteria(core, imp){ return "ARG: " + imp; }
+function dir(arg){ return Math.random() > 0.5 ? "DIR-OK" : null; }
+
+const core = { ID:"CORE-1" };
+
+document.getElementById("trigger").addEventListener("click", () => {
+
+  visClear();
+
+  // MIR
+  const impulse = mir("DIR-Ereignis ausgelöst");
+  visOn("vis-mir");
+
+  // RESPO
+  const r = respo(core, impulse);
+  visOn("vis-respo");
+
+  // ARGUMENTERIA
+  const a = argumenteria(core, impulse);
+  visOn("vis-arg");
+
+  // DIR
+  const d = dir(a);
+  if (d) {
+    visOn("vis-dir");
+  } else {
+    visFail("vis-dir");
+  }
+
+  // REAL
+  if (!d) {
+    visFail("vis-real");
+    document.getElementById("real").textContent =
+      "REAL: Weiterleitung aktiviert → DIR hat kein gültiges Ereignis erzeugt.";
+  } else {
+    visOn("vis-real");
+    document.getElementById("real").textContent =
+      "REAL: OK → DIR-Ereignis erfolgreich.";
+  }
+
+  // Pipeline-Ausgabe
+  const pipeline = { impulse, respo: r, argumenteria: a, dir: d };
+  document.getElementById("pipeline").textContent =
+    JSON.stringify(pipeline, null, 2);
+});
+</script>
+
+</body>
+</html>

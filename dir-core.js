@@ -1,3 +1,3 @@
-export function dir(respoOutput) {
-  return `DIR: ${respoOutput}`;
+export function dir(arg) {
+  return arg.reply;
 }

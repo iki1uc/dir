@@ -1,22 +1,24 @@
-export function ncRespo(instanz) {
-  const root = instanz.ROOT;
-  const nc   = instanz.NC;
+export function Ghost(instanzen) {
+  return {
+    view() {
+      return instanzen.map(i => ({
+        ID: i.ROOT.ID,
+        status: i.NC.scalar,
+        gate: i.ROOT.GATE
+      }));
+    },
 
-  if (!root) {
-    return "NC-RESPO: ROOT fehlt.";
-  }
+    sense(impulse) {
+      return `Ghost registriert Impuls: "${impulse.text}"`;
+    },
 
-  if (!root.ID || !root.GATE || !root.SAT || !root.ANKER) {
-    return "NC-RESPO: ROOT unvollständig.";
-  }
+    lead() {
+      return "Ghost aktiviert Leadership-Modus.";
+    },
 
-  let status = "OK";
-
-  if (nc.error)   status = `ERROR: ${nc.error}`;
-  if (nc.help)    status = `HELP: ${nc.help}`;
-  if (nc.ghost)   status = "GHOST-MODE";
-  if (nc.wraight) status = "WRAIGHT-MODE";
-  if (nc.scalar)  status = `SCALAR: ${nc.scalar}`;
-
-  return `NC-RESPO prüft ROOT(ID=${root.ID}) → Status: ${status}`;
+    command(instanz, mode) {
+      instanz.NC.scalar = mode;
+      return `Ghost setzt Instanz ${instanz.ROOT.ID} auf Modus "${mode}".`;
+    }
+  };
 }

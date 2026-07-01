@@ -1,24 +1,25 @@
-<script type="module">
-  import { createInstanz } from "./instanz-factory.js";
-  import { Ghost } from "./ghost-core.js";
-  import { mir } from "./mir-core.js";
-  import { argumenteria } from "./argumenteria-core.js";
-  import { dir } from "./dir-core.js";
-  import { Realm } from "./realm-core.js";
+document.getElementById("trigger").addEventListener("click", () => {
+  const impulse = mir("DIR-Ereignis ausgelöst");
+  const r = respo(core, impulse);
+  const a = argumenteria(core, impulse);
+  const d = dir(a);
 
-  // Instanzen erzeugen
-  const i1 = createInstanz("INST-01");
-  const i2 = createInstanz("INST-02");
-  const i3 = createInstanz("INST-03");
+  const pipeline = {
+    impulse,
+    respo: r,
+    argumenteria: a,
+    dir: d
+  };
 
-  // Ghost erzeugen
-  const ghost = Ghost([i1, i2, i3]);
+  document.getElementById("pipeline").textContent =
+    JSON.stringify(pipeline, null, 2);
 
-  // Realm erzeugen
-  const realm = Realm([i1, i2, i3], ghost, mir, argumenteria, dir);
-
-  // Tick ausführen
-  const result = realm.tick("Hallo Realm!");
-
-  document.getElementById("respo").textContent = JSON.stringify(result, null, 2);
-</script>
+  // REAL-Weiterleitung
+  if (!d) {
+    document.getElementById("real").textContent =
+      "REAL: Weiterleitung aktiviert → DIR hat kein gültiges Ereignis erzeugt.";
+  } else {
+    document.getElementById("real").textContent =
+      "REAL: OK → DIR-Ereignis erfolgreich.";
+  }
+});

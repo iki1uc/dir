@@ -1,3 +1,3 @@
-export function mir(input) {
-  return `MIR: ${input}`;
+export function mir(text) {
+  return { text };
 }

@@ -1,23 +1,33 @@
-export function ncRespo(instanz) {
-  const root = instanz.ROOT;
-  const nc   = instanz.NC;
+// RESPO-ECO: prüft Instanz + Impuls + ECO-Wert
+export function respo(instanz, impulse) {
 
-  if (!root) {
-    return "NC-RESPO: ROOT fehlt.";
-  }
+  // ECO-Grundwerte
+  const E = impulse.text.length || 1;
+  const C = instanz.NC?.scalar ? 2 : 1;
+  const O = impulse.pulse || 1;
 
-  if (!root.ID || !root.GATE || !root.SAT || !root.ANKER) {
-    return "NC-RESPO: ROOT unvollständig.";
-  }
+  // E³C³O³§ – ökonomischer Blitzpunkt
+  const E3 = E ** 3;
+  const C3 = C ** 3;
+  const O3 = O ** 3;
 
-  let status = "OK";
+  const ecoBlitz = E3 - C3 + O3;
 
-  if (nc.error)   status = `ERROR: ${nc.error}`;
-  if (nc.help)    status = `HELP: ${nc.help}`;
-  if (nc.ghost)   status = "GHOST-MODE";
-  if (nc.wraight) status = "WRAIGHT-MODE";
-  if (nc.scalar)  status = `SCALAR: ${nc.scalar}`;
+  // Gesetzpunkt §
+  const gesetz = ecoBlitz >= 0 ? "§-OK" : "§-NICHT";
 
-  return `NC-RESPO prüft ROOT(ID=${root.ID}) → Status: ${status}`;
+  // WURMlochINGATEout – Warp-Transformation
+  const warp = ecoBlitz * 3;
+
+  return {
+    instanz: instanz.ROOT.ID,
+    impulse: impulse.text,
+    E3,
+    C3,
+    O3,
+    ecoBlitz,
+    gesetz,
+    warp,
+    status: warp > 50 ? "WARB-ACTIVE" : "WARB-LOW"
+  };
 }
-
